@@ -4,33 +4,36 @@ namespace Names
 {
     internal static class HistogramSample
     {
-        public static HeatmapData GetBirthsPerDateHeatmap(NameData[] names)
+        public static HistogramData GetBirthsPerDayHistogram(NameData[] names)
         {
-            // Двумерный массив дат
-            double[,] dates = new double[31, 12];
-            int mathesCount = 0;
-            int peopleAmount = 23;
+            int[] arr = new[] { 10, 20, 23, 30, 50, 100, 200, 365};
+            string[] amount = new string[arr.Length];
+            for (int i = 0; i < arr.Length; i++)
+                amount[i] = arr[i].ToString();
+            double[] matchesAmount = new double[arr.Length];
             Random rand = new Random();
-            // Собираем статистику дней рождения рандомных человек в кол-ве peopleAmount
-            for (int i = 0; i < peopleAmount; i++)
+            double[,] dates = new double[31, 12];
+            for (int j = 0; j < arr.Length; j++)
             {
-                int temp = rand.Next(names.Length);
-                if (dates[names[temp].BirthDate.Day - 1, names[temp].BirthDate.Month - 1] == 0)
-                    dates[names[temp].BirthDate.Day - 1, names[temp].BirthDate.Month - 1] = 1;
-                else
+                for (int k = 0; k < arr[j]; k++)
                 {
-                    dates[names[temp].BirthDate.Day - 1, names[temp].BirthDate.Month - 1] *= 50;
-                    mathesCount++;
+                    for (int i = 0; i < arr[j]; i++)
+                    {
+                        int temp = rand.Next(names.Length);
+                        if (dates[names[temp].BirthDate.Day - 1, names[temp].BirthDate.Month - 1] == 0)
+                            dates[names[temp].BirthDate.Day - 1, names[temp].BirthDate.Month - 1] = 1;
+                        else
+                        {
+                            matchesAmount[j]++;
+                        }
+                    }
                 }
+                matchesAmount[j] /= arr[j];
             }
-            string[] days = new string[31];
-            for (int i = 1; i < 32; i++)
-                days[i - 1] = i.ToString();
-            string[] months = new string[12];
-            for (int i = 1; i < 13; i++)
-                months[i - 1] = i.ToString();
-            return new HeatmapData($"Количество совпадений - {mathesCount}",
-                dates, days, months);
+            
+            return new HistogramData(string.Format("kdjbnd"), amount, matchesAmount);
         }
+
+        
     }
 }

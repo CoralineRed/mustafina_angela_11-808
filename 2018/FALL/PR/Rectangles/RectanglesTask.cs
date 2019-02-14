@@ -25,11 +25,18 @@ namespace Rectangles
 		// Если прямоугольники совпадают, можно вернуть номер любого из них.
 		public static int IndexOfInnerRectangle(Rectangle r1, Rectangle r2)
 		{
-            if (r1.Top >= r2.Top && r1.Bottom <= r2.Bottom &&
-                r1.Left >= r2.Left && r1.Right <= r2.Right) return 0;
-            else if (r2.Top >= r1.Top && r2.Bottom <= r1.Bottom &&
-                r2.Left >= r1.Left && r2.Right <= r1.Right) return 1;
+            if (IsInside(r1, r2)) return 0;
+            else if (IsInside(r2, r1)) return 1;
 			return -1;
 		}
-	}
+
+        /// <summary>
+        /// Находится ли первый прямоугольник внутри второго.
+        /// </summary>
+        public static bool IsInside(Rectangle r1, Rectangle r2)
+        {
+            return r1.Top >= r2.Top && r1.Bottom <= r2.Bottom &&
+                r1.Left >= r2.Left && r1.Right <= r2.Right;
+        }
+    }
 }

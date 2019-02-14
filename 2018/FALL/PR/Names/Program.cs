@@ -11,8 +11,7 @@ namespace Names
         private static void Main(string[] args)
         {
             var namesData = ReadData();
-            for (int i = 0; i < 10; i++)
-                Charts.ShowHeatmap(HistogramSample.GetBirthsPerDateHeatmap(namesData));
+                Charts.ShowHistogram(HistogramSample.GetBirthsPerDayHistogram(namesData));
             Console.WriteLine();
         }
 

@@ -2,11 +2,11 @@
 
 namespace DistanceTask
 {
-	public static class DistanceTask
-	{
-		// Расстояние от точки (x, y) до отрезка AB с координатами A(ax, ay), B(bx, by)
-		public static double GetDistanceToSegment(double ax, double ay, double bx, double by, double x, double y)
-		{
+    public static class DistanceTask
+    {
+        // Расстояние от точки (x, y) до отрезка AB с координатами A(ax, ay), B(bx, by)
+        public static double GetDistanceToSegment(double ax, double ay, double bx, double by, double x, double y)
+        {
             if (ax == bx)
                 if (y <= Math.Max(ay, by) && y >= Math.Min(ay, by))
                     return Math.Abs(ax - x);
@@ -20,11 +20,18 @@ namespace DistanceTask
             double c = y + x / k;
             double x1 = (c - b) / (k + 1 / k);
             double y1 = k * x1 + b;
+            // Если перпендикуляр из точки падает на отрезок, возвращаем его длину.
             if (x1 <= Math.Max(ax, bx) && x1 >= Math.Min(ax, bx))
-                return Math.Sqrt((x1 - x) * (x1 - x) + (y1 - y) * (y1 - y));
+                return GetDistanceBetweenPoints(x, y, x1, y1);
             else
-                return Math.Sqrt(Math.Min((ax - x) * (ax - x) + (ay - y) * (ay - y),
-                    (bx - x) * (bx - x) + (by - y) * (by - y)));
-		}
-	}
+                // В ином случае возвращаем расстояние до ближайшего конца отрезка.
+                return Math.Min(GetDistanceBetweenPoints(x, y, ax, ay),
+                    GetDistanceBetweenPoints(x, y, bx, by));
+        }
+
+        public static double GetDistanceBetweenPoints(double ax, double ay, double bx, double by)
+        {
+            return Math.Sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by));
+        }
+    }
 }

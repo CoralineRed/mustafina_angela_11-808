@@ -4,19 +4,6 @@ using System.Drawing;
 
 namespace RefactorMe
 {
-    // ## Прочитайте! ##
-    //
-    // Ваша задача привести код в этом файле в порядок. 
-    // Для начала запустите эту программу. Для этого в VS в проект подключите сборку System.Drawing.
-
-    // Переименуйте всё, что называется неправильно. Это можно делать комбинацией клавиш Ctrl+R, Ctrl+R (дважды нажать Ctrl+R).
-    // Повторяющиеся части кода вынесите во вспомогательные методы. Это можно сделать выделив несколько строк кода и нажав Ctrl+R, Ctrl+M
-    // Избавьтесь от всех зашитых в коде числовых констант — положите их в переменные с понятными именами.
-    // 
-    // После наведения порядка проверьте, что ваш код стал лучше. 
-    // На сколько проще после ваших переделок стало изменить размер фигуры? Повернуть её на некоторый угол? 
-    // Научиться рисовать невозможный треугольник, вместо квадрата?
-
     public struct Point
     {
         public float x, y;
@@ -75,17 +62,17 @@ namespace RefactorMe
             Drawer.Initialize();
             double angle = Math.PI * (anglesAmount - 2) / anglesAmount;
             double turnAngle = Math.PI - angle;
-            double h = size / 10;
+            double heigth = size / 10;
 
             for (int i = 0; i < anglesAmount; i++)
             {
                 Point point = new Point(start.x, start.y);
                 point = Drawer.Go(point, size, rotationAngle + turnAngle * i);
-                point = Drawer.Go(point, h / Math.Sin(Math.PI / anglesAmount), rotationAngle + turnAngle * i + Math.PI / anglesAmount);
+                point = Drawer.Go(point, heigth / Math.Sin(Math.PI / anglesAmount), rotationAngle + turnAngle * i + Math.PI / anglesAmount);
                 start = new Point(point.x, point.y);
-                double middle = size - h / Math.Tan(angle / 2) + h / Math.Tan(Math.PI / anglesAmount);
-                point = Drawer.Go(point, middle, rotationAngle + turnAngle * i + Math.PI);
-                double innerSide = middle - h / Math.Tan(angle / 2) - h / Math.Tan(angle);
+                double middleSide = size - heigth / Math.Tan(angle / 2) + heigth / Math.Tan(Math.PI / anglesAmount);
+                point = Drawer.Go(point, middleSide, rotationAngle + turnAngle * i + Math.PI);
+                double innerSide = middleSide - heigth / Math.Tan(angle / 2) - heigth / Math.Tan(angle);
                 Drawer.Go(point, innerSide, rotationAngle + angle + turnAngle * i);
             }
             
