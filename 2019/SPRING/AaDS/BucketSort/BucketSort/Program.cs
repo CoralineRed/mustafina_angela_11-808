@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Farey
+namespace BucketSort
 {
     public class ListElement<T>
     {
@@ -44,11 +48,19 @@ namespace Farey
             if (Head == null) Head = newItem;
         }
 
-        public T Pop()
+        public T PopFront()
         {
             T value = Head.Value;
             Head = Head.Previous;
             if (Head == null) Tail = null;
+            return value;
+        }
+
+        public T PopBack()
+        {
+            T value = Tail.Value;
+            Tail = Tail.Next;
+            if (Tail == null) Head = null;
             return value;
         }
 
@@ -60,51 +72,21 @@ namespace Farey
         }
     }
 
-    public class Rational
-    {
-        public readonly int Numerator;
-        public readonly int Denominator;
-
-        public Rational(int num, int den)
-        {
-            Numerator = num;
-            Denominator = den;
-        }
-    }
-
     class Program
     {
-        public static MyList<Rational> Farey(int n)
+        public static void BucketSort(MyList<string> arr)
         {
-            var fareyNumbers = new MyList<Rational>();
-            fareyNumbers.PushFront(new Rational(0, 1));
-            fareyNumbers.PushFront(new Rational(1, 1));
-            Insert(fareyNumbers.Tail, fareyNumbers.Head, n);
-            return fareyNumbers;
-        }
-
-        public static void Insert(ListElement<Rational> prev, ListElement<Rational> next, int n)
-        {
-            if (prev.Value.Denominator + next.Value.Denominator <= n)
-            {
-                var newValue = new Rational(prev.Value.Numerator + next.Value.Numerator, prev.Value.Denominator + next.Value.Denominator);
-                MyList<Rational>.Insert(newValue, prev, next);
-                Insert(prev, prev.Next, n);
-                Insert(next.Previous, next, n);
-            }
+            
         }
 
         static void Main(string[] args)
         {
-            int n = int.Parse(Console.ReadLine());
-            var fareyNums = Farey(n);
-            var currentNum = fareyNums.Tail;
-            while (currentNum != null)
-            {
-                Console.WriteLine(currentNum.Value.Numerator + "/" + currentNum.Value.Denominator);
-                currentNum = currentNum.Next;
-            }
-            Console.ReadKey();
+            var array = new MyList<string>();
+            var n = int.Parse(Console.ReadLine());
+            for (int i = 0; i < n; i++)
+                array.PushFront(Console.ReadLine());
+            BucketSort(array);
+            
         }
     }
 }
