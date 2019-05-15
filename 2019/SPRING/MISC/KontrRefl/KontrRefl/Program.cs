@@ -34,7 +34,7 @@ namespace KontrRefl
                     for (int j = 2; j < taskInfo.Count(); j++)
                     {
                         var arg = taskInfo[j].Split();
-                        args[j - 2] = Expression.Parameter(Type.GetType());
+                        args[j - 2] = Expression.Parameter();
                     }
                     var f = Expression.Lambda(
                         Expression.Call(method, args));
