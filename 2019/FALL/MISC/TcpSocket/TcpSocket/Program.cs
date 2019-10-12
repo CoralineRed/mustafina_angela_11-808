@@ -3,57 +3,52 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
-namespace SocketTcpServer
+namespace SocketTcpClient
 {
     class Program
     {
-        static int port = 8005; // порт для приема входящих запросов
+        // адрес и порт сервера, к которому будем подключаться 
+        static int port = 8005; // порт сервера 
+        static string address = "10.17.1.35"; // адрес сервера 
+
         static void Main(string[] args)
         {
-            // получаем адреса для запуска сокета
-            IPEndPoint ipPoint = new IPEndPoint(IPAddress.Parse("10.17.3.202"), port);
-
-            // создаем сокет
-            Socket listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            try
+            while (true)
             {
-                // связываем сокет с локальной точкой, по которой будем принимать данные
-                listenSocket.Bind(ipPoint);
-
-                // начинаем прослушивание
-                listenSocket.Listen(10);
-
-                Console.WriteLine("Сервер запущен. Ожидание подключений...");
-
-                while (true)
+                try
                 {
-                    Socket handler = listenSocket.Accept();
-                    // получаем сообщение
+                    Console.Write("Введите число: ");
+                    IPEndPoint ipPoint = new IPEndPoint(IPAddress.Parse(address), port);
+
+                    Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    // подключаемся к удаленному хосту 
+                    socket.Connect(ipPoint);
+                    string message = Console.ReadLine();
+                    byte[] data = Encoding.Unicode.GetBytes(message);
+                    socket.Send(data);
+
+                    // получаем ответ 
+                    data = new byte[256]; // буфер для ответа 
                     StringBuilder builder = new StringBuilder();
-                    int bytes = 0; // количество полученных байтов
-                    byte[] data = new byte[256]; // буфер для получаемых данных
+                    int bytes = 0; // количество полученных байт 
 
                     do
                     {
-                        bytes = handler.Receive(data);
+                        bytes = socket.Receive(data, data.Length, 0);
                         builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
                     }
-                    while (handler.Available > 0);
+                    while (socket.Available > 0);
+                    Console.WriteLine("ответ сервера: " + builder.ToString());
 
-                    Console.WriteLine(DateTime.Now.ToShortTimeString() + ": " + builder.ToString());
-
-                    // отправляем ответ
-                    string message = "ваше сообщение доставлено";
-                    data = Encoding.Unicode.GetBytes(message);
-                    handler.Send(data);
-                    // закрываем сокет
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
+                    // закрываем сокет 
+                    socket.Shutdown(SocketShutdown.Both);
+                    socket.Close();
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                // Console.Read(); 
             }
         }
     }
