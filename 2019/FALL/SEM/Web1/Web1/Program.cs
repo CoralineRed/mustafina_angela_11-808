@@ -9,23 +9,17 @@ namespace Web1
     {
         static void Main(string[] args)
         {
-            WebRequest request = WebRequest.Create("https://www.w3.org/TR/PNG/iso_8859-1.txt");
-            WebResponse response = request.GetResponse();
-            using (Stream stream = response.GetResponseStream())
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    string line = "";
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        Console.WriteLine(line);
-                    }
-                }
-            }
-            response.Close();
-            Console.WriteLine("Запрос выполнен");
-            Console.Read();
+            DownloadFileAsync().GetAwaiter();
 
+            Console.WriteLine("Файл загружен");
+            Console.Read();
+        }
+
+        private static async Task DownloadFileAsync()
+        {
+            WebClient client = new WebClient();
+            await client.DownloadFileTaskAsync(new Uri("https://www.w3.org/TR/PNG/iso_8859-1.txt"),
+                "mytxtFile.txt");
         }
     }
 }
