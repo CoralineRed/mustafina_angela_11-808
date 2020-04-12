@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Добавление поста";
+}
+
+@model SocialNetwork.ViewModels.PostVM
+
+<form asp-action="AddPost" asp-controller="Posts">
+    <div class="validation" asp-validation-summary="ModelOnly" />
+        @*<input type="hidden" value="@ViewBag.PhoneId" name="PhoneId" />*@
+    <div>
+        <div class="form-group">
+            <label asp-for="Name">Заголовок</label>
+            <input type="text" asp-for="Name" />
+            <span asp-validation-for="Name" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Text">Текст</label>
+            <input type="text" asp-for="Text" />
+            <span asp-validation-for="Text" />
+        </div>
+        <div>
+            <label asp-for="Photo">Изображение</label><br />
+            <input type="file" asp-for="Photo" />
+            <span asp-validation-for="Photo" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Добавить" class="btn btn-outline-dark" />
+        </div>
+    </div>
+</form>
+

@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Мои посты";
+}
+
+@model List<Post>
+
+<a asp-action="AddPost" asp-controller="Posts">Добавить пост</a>
+
+<h3>Мои посты:</h3>
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    <a href="~/Posts/Post?postId=@Model[i].Id">@Model[i].Name</a><br />
+    <p>@Model[i].Text</p>
+    <p>типа картинка</p>
+    <p>Время создания: @Model[i].CreationTime.ToString()</p>
+    @if (Model[i].EditTime != null)
+    {
+        <p>Время редактирования: @Model[i].EditTime.ToString()</p>
+    }
+    <br />
+}

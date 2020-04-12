@@ -1,0 +1,17 @@
+﻿@model SocialNetwork.ViewModels.PostWithComments
+@{
+    ViewData["Title"] = Model.Post.Name;
+}
+
+<h3>@Model.Post.Name</h3>
+<p>@Model.Post.Text</p>
+<p>картинощка</p>
+<br />
+
+@for (int i = 0; i < Model.Comments.Count; i++)
+{
+    <p>@Model.Comments[i].UserId</p>
+    <p>@Model.Comments[i].Text</p>
+    <br />
+}
+
