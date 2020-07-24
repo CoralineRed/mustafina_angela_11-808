@@ -29,7 +29,6 @@ namespace SocialNetwork.Models
         [Required(ErrorMessage = "Не указано ФИО")]
         public string FullName { get; set; }
 
-        [BindProperty]
         public IFormFile Photo { get; set; }
 
         [Required(ErrorMessage = "Не указан номер телефона")]
